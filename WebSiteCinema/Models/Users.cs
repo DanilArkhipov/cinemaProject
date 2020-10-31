@@ -5,6 +5,10 @@ namespace WebSiteCinema.Models
         public long id;
         public string login;
         public string password;
-        
+        public byte status;
+        public byte role;
+        public string email;
+        public string phone;
+        public byte[] avatar;
     }
 }
