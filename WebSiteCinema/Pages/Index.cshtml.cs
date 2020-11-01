@@ -23,7 +23,6 @@ namespace WebSiteCinema.Pages
         {
             Users usr = new Users()
             {
-                id = 1L,
                 login = "asfd",
                 password = "adsf",
                 status = (byte)1,
@@ -32,7 +31,7 @@ namespace WebSiteCinema.Pages
                 phone = "asdfsdf",
             }; 
             SqlServerRepository<Users> rep = new SqlServerRepository<Users>();
-            rep.Create(usr);
+            rep.Insert(usr);
         }
     }
 }

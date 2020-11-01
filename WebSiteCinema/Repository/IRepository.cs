@@ -4,11 +4,11 @@ namespace Repository
 {
     public interface IRepository<TEntity> where TEntity:class
     {
-        void Create(TEntity tEntity);
-        void Create(IEnumerable<TEntity> tEntity);
+        void Insert(TEntity tEntity);
+        void Insert(IEnumerable<TEntity> tEntity);
         
         TEntity GetById(long id);
-        IEnumerable<TEntity> GetAllById(long id);
+        IEnumerable<TEntity> GetAll();
 
         void Update(long id);
 

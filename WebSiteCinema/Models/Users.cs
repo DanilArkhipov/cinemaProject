@@ -6,8 +6,6 @@ namespace WebSiteCinema.Models
     public class Users
     {
         [Column]
-        public long id;
-        [Column]
         public string login;
         [Column]
         public string password;
