@@ -10,7 +10,7 @@ namespace Repository
 {
     public static class Converter<TEntity> where TEntity:class
     {
-        private static FieldInfo[] GetNotNullFields(TEntity tEntity)
+        private static FieldInfo[] GetNotNullAndNotIdFields(TEntity tEntity)
         {
             var type = tEntity.GetType();
             return type.GetFields().Where(x => x.GetValue(tEntity) != null&&x.Name!="id").ToArray();
@@ -18,12 +18,28 @@ namespace Repository
 
         public static string[] GetNotNullFieldsNames(TEntity tEntity)
         {
-            return GetNotNullFields(tEntity).Select(x => x.Name).ToArray();
+            return GetNotNullAndNotIdFields(tEntity).Select(x => x.Name).ToArray();
+        }
+
+        public static string[] GetNotNullFieldsValues(TEntity tEntity)
+        {
+            var tmp = GetNotNullAndNotIdFields(tEntity).ToArray();
+            var res = new string[tmp.Length];
+            for (int i = 0;i<tmp.Length;i++)
+            {
+                if (tmp[i].FieldType == string.Empty.GetType())
+                {
+                    res[i] = "'" + tmp[i].GetValue(tEntity).ToString() + "'";
+                }
+                else res[i] = tmp[i].GetValue(tEntity).ToString();
+            }
+
+            return res;
         }
 
         public static string GetNotNullFieldsNamesString(TEntity tEntity)
         {
-            var arr = GetNotNullFields(tEntity);
+            var arr = GetNotNullAndNotIdFields(tEntity);
             var sb = new StringBuilder();
             for (int i = 0; i < arr.Length; i++)
             {
@@ -38,7 +54,7 @@ namespace Repository
 
         public static string GetNotNullFieldsValuesString(TEntity tEntity)
         {
-            var arr = GetNotNullFields(tEntity);
+            var arr = GetNotNullAndNotIdFields(tEntity);
             var sb = new StringBuilder();
             for (int i = 0; i < arr.Length; i++)
             {
@@ -101,6 +117,24 @@ namespace Repository
                 reader.CloseAsync();
                 return null;
             }
+        }
+
+        public static string TEntityToUpdatingString(TEntity tEntity)
+        {
+            var type = typeof(TEntity);
+            var names = Converter<TEntity>.GetNotNullFieldsNames(tEntity);
+            var values = Converter<TEntity>.GetNotNullFieldsValues(tEntity);
+            var sb = new StringBuilder();
+            for (int i = 0; i < names.Length; i++)
+            {
+                if (i != names.Length - 1)
+                {
+                    sb.AppendFormat("{0}={1},", names[i], values[i]);
+                }
+                else sb.AppendFormat("{0}={1}",names[i],values[i]);
+            }
+
+            return sb.ToString();
         }
     }
 }

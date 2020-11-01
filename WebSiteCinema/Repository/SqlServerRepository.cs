@@ -84,9 +84,19 @@ namespace Repository
             }
         }
 
-        async public void UpdateAsync(long id)
+        async public Task UpdateAsync(long id,TEntity tEntity)
         {
-            throw new System.NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                string cmd = string.Format(
+                    "UPDATE {0} SET {1} WHERE id={2};",
+                    typeof(TEntity).Name,
+                    Converter<TEntity>.TEntityToUpdatingString(tEntity),
+                    id);
+                await connection.OpenAsync();
+                var command = new SqlCommand(cmd,connection);
+                await command.ExecuteNonQueryAsync();
+            }
         }
 
         async public Task DeleteAsync(long id)
@@ -97,9 +107,9 @@ namespace Repository
                     "DELETE FROM {0} WHERE {0}.id = {1};",
                     typeof(TEntity).Name,
                     id);
-                connection.OpenAsync();
+                await connection.OpenAsync();
                 var command = new SqlCommand(cmd,connection);
-                command.ExecuteNonQueryAsync();
+                await command.ExecuteNonQueryAsync();
             }
         }
     }

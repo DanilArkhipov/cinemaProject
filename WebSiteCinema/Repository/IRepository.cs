@@ -11,7 +11,7 @@ namespace Repository
         Task<IEnumerable<TEntity>> GetByIdAsync(long id);
         Task<IEnumerable<TEntity>> GetAllAsync();
 
-        void UpdateAsync(long id);
+        Task UpdateAsync(long id,TEntity tEtity);
 
         Task DeleteAsync(long id);
     }

@@ -51,7 +51,8 @@ namespace WebSiteCinema.Pages
             {
                 Console.WriteLine(v.id);
             }
-            await rep.DeleteAsync(54);
+            await rep.DeleteAsync(71);
+            await rep.UpdateAsync(72, usr1);
         }
     }
 }
