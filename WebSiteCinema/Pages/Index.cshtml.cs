@@ -19,29 +19,39 @@ namespace WebSiteCinema.Pages
             _logger = logger;
         }
 
-        public void OnGet()
+        async public void OnGet()
         {
-            Users usr1 = new Users()
-            {
-                login = "dddd",
-                password = "pppp",
-                status = (byte)1,
-                role = (byte)1,
-                email = "ffff",
-                phone = "112223123",
-            }; 
-            Users usr2 = new Users()
-            {
-                login = "gspd",
-                password = "rw",
-                status = (byte)0,
-                role = (byte)0,
-                email = "gspd",
-                phone = "88005553535",
-            }; 
+            Users usr1 = new Users
+            (
+                default(long),
+                "dddd",
+                "pppp",
+                (byte)1,
+                (byte)1,
+                "ffff",
+                "112223123"
+            ); 
+            Users usr2 = new Users
+            (
+                default(long),
+                "gspd",
+                "rw",
+                (byte)0,
+                (byte)0,
+                "gspd",
+                "88005553535"
+            );
             SqlServerRepository<Users> rep = new SqlServerRepository<Users>();
-            rep.Insert(usr1);
-            rep.Insert(new []{usr1,usr2});
+            await rep.InsertAsync(usr1);
+            await rep.InsertAsync(new []{usr1,usr2});
+            var res1 = await rep.GetByIdAsync(1);
+            Console.WriteLine(res1.FirstOrDefault().id);
+            var res2 = await rep.GetAllAsync();
+            foreach (var v in res2)
+            {
+                Console.WriteLine(v.id);
+            }
+            await rep.DeleteAsync(54);
         }
     }
 }

@@ -1,23 +1,38 @@
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebSiteCinema.Models
 {
-    [Table("users")]
     public class Users
     {
-        [Column]
+        public long id;
         public string login;
-        [Column]
         public string password;
-        [Column]
-        public byte status;
-        [Column]
-        public byte role;
-        [Column]
+        public short status;
+        public short role;
         public string email;
-        [Column]
         public string phone;
-        /*[Column]
-        public byte[] avatar;*/
+        public byte[] avatar;
+
+        public Users(
+            long id,
+            string login,
+            string password,
+            short status,
+            short role,
+            string email,
+            string phone,
+            byte[] avatar = null)
+        {
+            this.id = id;
+            this.login = login;
+            this.password = password;
+            this.status = status;
+            this.role = role;
+            this.email = email;
+            this.phone = phone;
+            this.avatar = avatar;
+        }
+
     }
 }

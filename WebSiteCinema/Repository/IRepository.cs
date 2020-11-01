@@ -1,17 +1,18 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Repository
 {
     public interface IRepository<TEntity> where TEntity:class
     {
-        void Insert(TEntity tEntity);
-        void Insert(IEnumerable<TEntity> tEntity);
+        Task InsertAsync(TEntity tEntity);
+        Task InsertAsync(IEnumerable<TEntity> tEntity);
         
-        TEntity GetById(long id);
-        IEnumerable<TEntity> GetAll();
+        Task<IEnumerable<TEntity>> GetByIdAsync(long id);
+        Task<IEnumerable<TEntity>> GetAllAsync();
 
-        void Update(long id);
+        void UpdateAsync(long id);
 
-        void Delete(long id);
+        Task DeleteAsync(long id);
     }
 }
