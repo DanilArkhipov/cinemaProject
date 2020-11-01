@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
 
 namespace Repository
@@ -24,9 +25,29 @@ namespace Repository
             }
         }
 
-        public void Insert(IEnumerable<TEntity> tEntity)
+        async public void Insert(IEnumerable<TEntity> tEntity)
         {
-            throw new System.NotImplementedException();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                var tEntityArr = tEntity.ToArray();
+                StringBuilder sb = new StringBuilder();
+                sb.AppendFormat("INSERT INTO {0}({1})VALUES"
+                    ,tEntityArr[0].GetType().Name,
+                    Converter<TEntity>.GetNotNullFieldsNamesString(tEntityArr[0]));
+                for (int i = 0; i < tEntityArr.Length; i++)
+                {
+                    if (i != tEntityArr.Length - 1)
+                    {
+                        sb.AppendFormat("({0}),", Converter<TEntity>.GetNotNullFieldsValuesString(tEntityArr[i]));
+                    }
+                    else sb.AppendFormat("({0});", Converter<TEntity>.GetNotNullFieldsValuesString(tEntityArr[i]));
+                }
+
+                var command = sb.ToString();
+                await connection.OpenAsync();
+                SqlCommand cmd = new SqlCommand(command.ToString(),connection);
+                await cmd.ExecuteNonQueryAsync();
+            }
         }
 
         public TEntity GetById(long id)

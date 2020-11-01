@@ -21,17 +21,27 @@ namespace WebSiteCinema.Pages
 
         public void OnGet()
         {
-            Users usr = new Users()
+            Users usr1 = new Users()
             {
-                login = "asfd",
-                password = "adsf",
+                login = "dddd",
+                password = "pppp",
                 status = (byte)1,
                 role = (byte)1,
-                email = "asdf",
-                phone = "asdfsdf",
+                email = "ffff",
+                phone = "112223123",
+            }; 
+            Users usr2 = new Users()
+            {
+                login = "gspd",
+                password = "rw",
+                status = (byte)0,
+                role = (byte)0,
+                email = "gspd",
+                phone = "88005553535",
             }; 
             SqlServerRepository<Users> rep = new SqlServerRepository<Users>();
-            rep.Insert(usr);
+            rep.Insert(usr1);
+            rep.Insert(new []{usr1,usr2});
         }
     }
 }
