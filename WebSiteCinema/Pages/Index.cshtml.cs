@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Repository;
+using WebSiteCinema.Models;
 
 namespace WebSiteCinema.Pages
 {
@@ -19,6 +21,19 @@ namespace WebSiteCinema.Pages
 
         public void OnGet()
         {
+            Users usr = new Users()
+            {
+                id = 1,
+                login = "asfd",
+                password = "adsf",
+                status = (byte)1,
+                role = (byte)1,
+                email = "asdf",
+                phone = "asdfsdf",
+                avatar= null,
+            };
+            SqlServerRepository<Users> rep = new SqlServerRepository<Users>();
+            rep.Create(usr);
         }
     }
 }
