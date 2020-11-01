@@ -23,15 +23,14 @@ namespace WebSiteCinema.Pages
         {
             Users usr = new Users()
             {
-                id = 1,
+                id = 1L,
                 login = "asfd",
                 password = "adsf",
                 status = (byte)1,
                 role = (byte)1,
                 email = "asdf",
                 phone = "asdfsdf",
-                avatar= null,
-            };
+            }; 
             SqlServerRepository<Users> rep = new SqlServerRepository<Users>();
             rep.Create(usr);
         }

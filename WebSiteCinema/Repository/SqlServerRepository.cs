@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
@@ -13,26 +14,26 @@ namespace Repository
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 var type = tEntity.GetType();
-                var properties = type.GetProperties();
+                var fields = type.GetFields();
                 var command = new StringBuilder();
-                command.Append("CREATE TABLE " + type.Name + "(");
-                for (int i = 0; i < properties.Length; i++)
+                command.Append("INSERT INTO " + type.Name + "(");
+                for (int i = 0; i < fields.Length; i++)
                 {
-                    command.Append(properties[i].Name);
-                    if (i != properties.Length - 1) command.Append(",");
+                    command.Append(fields[i].Name);
+                    if (i != fields.Length - 1) command.Append(",");
                     else command.Append(")");
                 }
 
-                command.Append("VALUES (");
-                for (int i = 0; i < properties.Length; i++)
+                command.Append("VALUES(");
+                for (int i = 0; i < fields.Length; i++)
                 {
-                    if (properties[i].GetType() == typeof(string))
+                    if (fields[i].FieldType == string.Empty.GetType())
                     {
-                        command.Append("'" + properties[i].GetValue(tEntity) + "'");
+                        command.Append("'" + fields[i].GetValue(tEntity) + "'");
                     }
-                    else command.Append("'" + properties[i].GetValue(tEntity) + "'");
+                    else command.Append(fields[i].GetValue(tEntity));
 
-                    if (i != properties.Length - 1) command.Append(",");
+                    if (i != fields.Length - 1) command.Append(",");
                     else command.Append(");");
                 }
 
