@@ -5,7 +5,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <PackageReference Include="linq2db.AspNet" Version="3.1.6" />
       <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="ORM\obj\ORM.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="ORM\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="ORM\obj\project.packagespec.json" />
     </ItemGroup>
 
 </Project>

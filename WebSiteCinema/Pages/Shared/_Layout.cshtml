@@ -1,45 +1,78 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - WebSiteCinema</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/css/site.css"/>
+    <meta charset="UTF-8">
+    <title>Cinema 25D</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/swiper/swiper-bundle.min.css" rel="stylesheet"><!-- только для главной страницы-->
+    <link href="/css/site.css" rel="stylesheet">
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container">
-            <a class="navbar-brand" asp-area="" asp-page="/Index">WebSiteCinema</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+<header class="main-header">
+    <div class="logo">
+        <a href="/"></a>
+    </div>
+
+    <nav class="header-nav">
+        <ul>
+            <li class="nav-item"><a href="#">Item 1</a></li>
+            <li class="nav-item"><a href="#">Item 2</a></li>
+            <li class="nav-item"><a href="#">Item 3</a></li>
+            <li class="nav-item"><a href="#">Item 4</a></li>
+            <li class="nav-item"><a href="#">Item 5</a></li>
+        </ul>
     </nav>
 </header>
-<div class="container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
 
-<footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2020 - WebSiteCinema - <a asp-area="" asp-page="/Privacy">Privacy</a>
+@RenderBody()
+
+
+<footer class="main-footer">
+    <div class="row">
+        <div class="col-12 col-sm-6">
+            <nav class="footer-nav">
+                <ul>
+                    <li><a href="#">Item 1</a></li>
+                    <li><a href="#">Item 2</a></li>
+                    <li><a href="#">Item 3</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-12 col-sm-6">
+            <div class="text-right">Cinema 25D - 2020</div>
+        </div>
     </div>
 </footer>
+
+<script src="/js/jquery.js"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script><!-- только для главной страницы-->
+<script src="/js/site.js"></script>
+<script src="/js/Ajax.js"></script>
+
+<!-- только для главной страницы-->
+<script>
+    var mySwiper = new Swiper('.swiper-container', {
+        // Optional parameters
+        direction: 'horizontal',
+        loop: true,
+
+        // If we need pagination
+        pagination: {
+            el: '.swiper-pagination',
+        },
+
+        // Navigation arrows
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+
+        // And if we need scrollbar
+        scrollbar: {
+            el: '.swiper-scrollbar',
+        },
+    })
+</script>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

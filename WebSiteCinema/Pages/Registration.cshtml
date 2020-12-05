@@ -1,0 +1,35 @@
+@page
+@model WebSiteCinema.Pages.Registration
+
+<div class="container custom-container">
+        <h3 class="text-center info-block">Заполните все поля и нажмите на кнопку "Зарегистрироваться". После этого Вам на электронную почту придёт сообщение для пожтверждения регистрации. Указывайте только настоящую информацию.</h3>
+        <form id="regForm" method="post">
+            <div class="form-group">
+              <label for="loginInput">Введите ваш логин</label>
+              <input type="text" class="form-control input-options" id="loginInput" aria-describedby="loginHelp" oninput="checkLogin()" name="login">
+              <small id="loginHelp" class="form-text second-text">Логин может содержать буквы английского алфавита и цифры от 0 до 9, он не может быть длиннее 12 символов. Логин должен быть уникальным</small> 
+            </div>
+            <div class="form-group">
+                <label for="emailInput">Введите ваш электронный почтовый адрес</label>
+                <input type="email" class="form-control input-options" id="emailInput" aria-describedby="emailHelp" name="email" oninput="checkEmail()">
+                <small id="emailHelp" class="form-text second-text">На этот адрес придёт письмо для подтверждения регистрации.</small>
+            </div>
+            <div class="form-group">
+                <label for="phoneInput">Введите ваш номер телефона</label>
+                <input type="text" class="form-control input-options" id="phoneInput" name="phone" oninput="checkPhone()">
+                <small id="phoneHelp" class="form-text second-text"></small>
+            </div>
+            <div class="form-group">
+                <label for="passwordInput1">Введите ваш пароль</label>
+                <input type="password" class="form-control input-options" id="passwordInput1" aria-describedby="passwordHelp1" oninput="checkPassword1()">
+                <small id="passwordHelp1" class="form-text second-text">Пароль может содержать буквы английского алфавита и цифры от 0 до 9. Минимальная длина пароля 8 символов, максимальная 16</small>
+            </div>
+            <div class="form-group">
+                <label for="passwordInput2">Повторите пароль</label>
+                <input type="password" class="form-control input-options" id="passwordInput2" oninput="checkSecondPasswordIsSimilarToFirst()" aria-describedby="passwordHelp2" name="password">
+                <small id="passwordHelp2" class="form-text second-text"></small>
+            </div>
+            <input type="submit" class="btn custom-btn"  aria-describedby="sendBtnHelp" value="Зарегистрироваться">
+            <small id="sendBtnHelp" class="form-text second-text"></small>
+          </form>
+    </div>

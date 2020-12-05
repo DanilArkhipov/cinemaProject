@@ -1,10 +1,227 @@
 ﻿@page
+@using ORM
 @model IndexModel
+@inject UsersRepository UsersRepository
 @{
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="content">
+    <div class="slider">
+        <div class="swiper-container">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                <div class="swiper-slide">
+                    <img alt="" src="https://picsum.photos/1200/400">
+                </div>
+                <div class="swiper-slide"><img alt="" src="https://picsum.photos/1200/400"></div>
+                <div class="swiper-slide"><img alt="" src="https://picsum.photos/1200/400"></div>
+            </div>
+            <!-- If we need pagination -->
+            <div class="swiper-pagination"></div>
+
+            <!-- If we need navigation buttons -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+
+            <!-- If we need scrollbar -->
+            <div class="swiper-scrollbar"></div>
+        </div>
+    </div>
+    <h1 class="text-center">Популярно сейчас</h1>
+    <div class="film-grid row">
+        <div class="col-sm-3 col-6">
+            <div class="film-item">
+                <div class="film-image">
+                    <img alt="Film Name" src="/images/films/film1.jpg">
+                </div>
+                <div class="film-meta">
+                    <div class="film-name">
+                        Film Name
+                    </div>
+                    <div class="film-category">
+                        Film Category
+                    </div>
+                </div>
+                <div class="film-meta-full">
+                    <div class="film-name">
+                        Film Name
+                    </div>
+                    <div class="film-category">
+                        Film Category
+                    </div>
+                    <div class="film-description">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate dolorum eligendi ipsum molestiae provident quisquam saepe vitae. Architecto consequuntur
+                    </div>
+                    <div class="film-button">
+                        <a class="btn" href="#">Купить билет</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 col-6">
+            <div class="film-item">
+                <div class="film-image">
+                    <img alt="Film Name" src="/images/films/film1.jpg">
+                </div>
+                <div class="film-meta">
+                    <div class="film-name">
+                        Film Name
+                    </div>
+                    <div class="film-category">
+                        Film Category
+                    </div>
+                </div>
+                <div class="film-meta-full">
+                    <div class="film-name">
+                        Film Name
+                    </div>
+                    <div class="film-category">
+                        Film Category
+                    </div>
+                    <div class="film-description">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate dolorum eligendi ipsum molestiae provident quisquam saepe vitae. Architecto consequuntur
+                    </div>
+                    <div class="film-button">
+                        <a class="btn" href="#">Купить билет</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 col-6">
+            <div class="film-item">
+                <div class="film-image">
+                    <img alt="Film Name" src="/images/films/film1.jpg">
+                </div>
+                <div class="film-meta">
+                    <div class="film-name">
+                        Film Name
+                    </div>
+                    <div class="film-category">
+                        Film Category
+                    </div>
+                </div>
+                <div class="film-meta-full">
+                    <div class="film-name">
+                        Film Name
+                    </div>
+                    <div class="film-category">
+                        Film Category
+                    </div>
+                    <div class="film-description">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate dolorum eligendi ipsum molestiae provident quisquam saepe vitae. Architecto consequuntur
+                    </div>
+                    <div class="film-button">
+                        <a class="btn" href="#">Купить билет</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 col-6">
+            <div class="film-item">
+                <div class="film-image">
+                    <img alt="Film Name" src="/images/films/film1.jpg">
+                </div>
+                <div class="film-meta">
+                    <div class="film-name">
+                        Film Name
+                    </div>
+                    <div class="film-category">
+                        Film Category
+                    </div>
+                </div>
+                <div class="film-meta-full">
+                    <div class="film-name">
+                        Film Name
+                    </div>
+                    <div class="film-category">
+                        Film Category
+                    </div>
+                    <div class="film-description">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate dolorum eligendi ipsum molestiae provident quisquam saepe vitae. Architecto consequuntur
+                    </div>
+                    <div class="film-button">
+                        <a class="btn" href="#">Купить билет</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <h1 class="text-center">Новинки</h1>
+    <div class="film-grid row">
+        <div class="col-sm-3 col-6">
+            <div class="film-item">
+                <div class="film-image">
+                    <img alt="Film Name" src="/images/films/film1.jpg">
+                </div>
+                <div class="film-meta">
+                    <div class="film-name">
+                        Film Name
+                    </div>
+                    <div class="film-category">
+                        Film Category
+                    </div>
+                </div>
+                <div class="film-meta-full">
+                    <div class="film-name">
+                        Film Name
+                    </div>
+                    <div class="film-category">
+                        Film Category
+                    </div>
+                    <div class="film-description">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate dolorum eligendi ipsum molestiae provident quisquam saepe vitae. Architecto consequuntur
+                    </div>
+                    <div class="film-button">
+                        <a class="btn" href="#">Купить билет</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="text-center">Скоро в кино</h1>
+    <div class="film-grid row">
+        <div class="col-sm-3 col-6">
+            <div class="film-item">
+                <div class="film-image">
+                    <img alt="Film Name" src="/images/films/film1.jpg">
+                </div>
+                <div class="film-meta">
+                    <div class="film-name">
+                        Film Name
+                    </div>
+                    <div class="film-category">
+                        Film Category
+                    </div>
+                </div>
+                <div class="film-meta-full">
+                    <div class="film-name">
+                        Film Name
+                    </div>
+                    <div class="film-category">
+                        Film Category
+                    </div>
+                    <div class="film-description">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate dolorum eligendi ipsum molestiae provident quisquam saepe vitae. Architecto consequuntur
+                    </div>
+                    <div class="film-button">
+                        <a class="btn" href="#">Купить билет</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="text-center">Мы в социальных сетях</h1>
+    <div class="social-buttons">
+        <a class="social-button vk" href="https://vk.com/durov">
+            <img alt="" src="/images/vk.svg">
+            ВКонтакте</a>
+        <a class="social-button instagram" href="https://instagram.com/durov/">
+            <img alt="" src="/images/instagram.svg">
+            Instagram</a>
+    </div>
+</section>

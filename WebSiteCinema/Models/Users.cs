@@ -5,7 +5,7 @@ namespace WebSiteCinema.Models
 {
     public class Users
     {
-        public long id;
+        public int id;
         public string login;
         public string password;
         public short status;
@@ -15,14 +15,14 @@ namespace WebSiteCinema.Models
         public byte[] avatar;
 
         public Users(
-            long id,
             string login,
             string password,
-            short status,
-            short role,
             string email,
             string phone,
-            byte[] avatar = null)
+            short status = 0,
+            short role = 0,
+            byte[] avatar = null,
+            int id = 0)
         {
             this.id = id;
             this.login = login;
@@ -32,6 +32,11 @@ namespace WebSiteCinema.Models
             this.email = email;
             this.phone = phone;
             this.avatar = avatar;
+        }
+
+        public Users()
+        {
+            
         }
 
     }
