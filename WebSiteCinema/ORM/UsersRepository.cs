@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LinqToDB;
 using LinqToDB.Configuration;
 using LinqToDB.Data;
+using WebSiteCinema.DataStorage;
 using WebSiteCinema.Models;
 
 namespace ORM
@@ -23,12 +24,7 @@ namespace ORM
         {
             return await Users.Select(x=>x).ToListAsync();
         }
-
-        public async Task<Users> GetByIdAsync(int id)
-        {
-            return await Users.FirstOrDefaultAsync(x => x.id == id);
-        }
-
+        
         public async Task<Users> GetByLoginAsync(string login)
         {
             return await Users.FirstOrDefaultAsync(x => x.login == login);
@@ -36,14 +32,15 @@ namespace ORM
 
         public async  Task InsertAsync(Users user)
         {
-            await Users.InsertWithInt32IdentityAsync(() => new Users
+            await Users.InsertAsync(() => new Users
             {
                 login = user.login,
                 email = user.email,
                 password = user.password,
                 phone = user.phone,
                 role = user.role,
-                status = user.status
+                status = user.status,
+                avatar = user.avatar,
             });
         }
 
@@ -52,9 +49,9 @@ namespace ORM
             await Users.Where(x => x.Equals(user)).DeleteAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string login )
         {
-            await Users.Where(x => x.id==id).DeleteAsync();
+            await Users.Where(x => x.login==login).DeleteAsync();
         }
         
 

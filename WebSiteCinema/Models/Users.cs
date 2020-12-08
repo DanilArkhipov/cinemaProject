@@ -5,14 +5,13 @@ namespace WebSiteCinema.Models
 {
     public class Users
     {
-        public int id;
         public string login;
         public string password;
         public short status;
         public short role;
         public string email;
         public string phone;
-        public byte[] avatar;
+        public string avatar;
 
         public Users(
             string login,
@@ -21,10 +20,8 @@ namespace WebSiteCinema.Models
             string phone,
             short status = 0,
             short role = 0,
-            byte[] avatar = null,
-            int id = 0)
+            string avatar = null)
         {
-            this.id = id;
             this.login = login;
             this.password = password;
             this.status = status;

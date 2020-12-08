@@ -11,9 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using LinqToDB.AspNet;
 using LinqToDB.AspNet.Logging;
+using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.Http;
 using ORM;
 using Repository;
+using WebSiteCinema.Middleware;
 using WebSiteCinema.Models;
+using WebSiteCinema.Services;
 
 namespace WebSiteCinema
 {
@@ -29,13 +33,15 @@ namespace WebSiteCinema
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpContextAccessor();
-            services.AddLinqToDbContext<UsersRepository>(((provider, options) =>
+            services.AddLinqToDbContext<UsersRepository>((provider, options) =>
             {
                 options
                     .UseSqlServer(Configuration.GetConnectionString("SqlServer"))
                     .UseDefaultLogging(provider);
-            }));
+            });
+            services.AddHttpContextAccessor();
+            services.AddScoped<IAuthentication, Authentication>();
+            services.AddScoped<IAuthorization, Authorization>();
             services.AddDistributedMemoryCache();
             services.AddSession(options => 
                 options.Cookie.Name = "AuthorizationSession");
@@ -56,12 +62,19 @@ namespace WebSiteCinema
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            app.UseCookiePolicy(new CookiePolicyOptions
+            {
+                MinimumSameSitePolicy = SameSiteMode.Strict,
+                HttpOnly = HttpOnlyPolicy.Always,
+                Secure = CookieSecurePolicy.Always
+            });
+            app.UseSession();
+            app.UseMiddleware<AuthenticationMiddleware>();
+            app.UseMiddleware<AuthorizationMiddleware>();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapRazorPages(); });
         }

@@ -13,6 +13,9 @@
       <_ContentIncludedByDefault Remove="ORM\obj\ORM.csproj.nuget.dgspec.json" />
       <_ContentIncludedByDefault Remove="ORM\obj\project.assets.json" />
       <_ContentIncludedByDefault Remove="ORM\obj\project.packagespec.json" />
+      <_ContentIncludedByDefault Remove="SeriallizatioData\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="SeriallizatioData\obj\project.packagespec.json" />
+      <_ContentIncludedByDefault Remove="SeriallizatioData\obj\SeriallizatioData.csproj.nuget.dgspec.json" />
     </ItemGroup>
 
 </Project>

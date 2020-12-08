@@ -2,20 +2,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using ORM;
-using SeriallizatioData;
-using WebSiteCinema.Authorization;
+using WebSiteCinema.DataStorage;
 using WebSiteCinema.Models;
+using WebSiteCinema.Services;
 
 namespace WebSiteCinema.Pages
 {
     public class Login : PageModel
     {
-        private HttpContext context;
-        private IUsersRepository _usersRepository;
-        public Login(IHttpContextAccessor contextAccessor,UsersRepository usersRepository)
+        private IAuthentication _authentication;
+        public Login(IAuthentication authentication)
         {
-            context = contextAccessor.HttpContext;
-            _usersRepository = usersRepository;
+            _authentication = authentication;
         }
         public void OnGet()
         {
@@ -24,14 +22,7 @@ namespace WebSiteCinema.Pages
 
         public async Task OnPostLogin(string login,string password,bool remember)
         {
-            if (remember == false)
-            {
-                var user = await _usersRepository.GetByLoginAsync(login);
-                if (user.login == login)
-                {
-                    context.Session.SetUserSessionData("User", new UserSession());
-                }
-            }
+            await _authentication.AuthenticateAsync(new UserData(login,password), remember);
         }
     }
 }

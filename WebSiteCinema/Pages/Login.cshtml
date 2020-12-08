@@ -4,7 +4,7 @@
 <section class="content">
     <div class="auth-form">
         <h2 class="text-center">Login</h2>
-        <form action="" class="form-vertical">
+        <form method="post" class="form-vertical">
             <div class="form-group">
                 <label for="login">Login</label>
                 <input type="text" class="form-control" id="login" name="login">
@@ -14,11 +14,11 @@
                 <input type="password" class="form-control" id="password" name="password">
             </div>
             <div class="form-check form-group">
-            <input type="checkbox" name="remember" class="form-check-input" id="authRememberMe">
+            <input type="checkbox" name="remember" class="form-check-input" value="true" id="authRememberMe">
             <label class="form-check-label" for="authRememberMe">Запомнить меня</label>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn" value="Login" asp-page-handler="OnPostLogin">
+                <input type="submit" class="btn" value="Login" asp-page-handler="Login">
                 <a href="@Url.Page("/Registration")" class="btn btn-primary">Register</a>
             </div>
         </form>
