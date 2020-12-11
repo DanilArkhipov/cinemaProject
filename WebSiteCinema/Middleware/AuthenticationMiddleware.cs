@@ -16,7 +16,7 @@ namespace WebSiteCinema.Middleware
  
         public async Task InvokeAsync(HttpContext context,IAuthentication authentication)
         {
-            authentication.AuthenticateAsync();
+            await authentication.AuthenticateAsync();
             await _next.Invoke(context);
         }
     }

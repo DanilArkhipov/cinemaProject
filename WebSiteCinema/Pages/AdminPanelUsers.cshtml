@@ -1,0 +1,38 @@
+@page
+@using ORM
+@using WebSiteCinema.HtmlContentMakers
+@model WebSiteCinema.Pages.AdminPanelUsers
+@inject UnitOfWork UnitOfWork
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="container">
+    <h1>Пользователи</h1>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>Логин</th>
+            <th>Почта</th>
+            <th>Телефон</th>
+            <th>Статус</th>
+            <th>Права</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            @{
+                        var users = await UnitOfWork.UsersRepository.GetAllAsync();
+                        foreach (var u in users)
+                        {
+                            @AdminUsersPage.CreateUserRow(
+                                u,
+                                @Url.Page("/UserEdit", new {login = u.login})
+                                );
+                        }
+                    }
+        </tr>
+        </tbody>
+    </table>
+</div>

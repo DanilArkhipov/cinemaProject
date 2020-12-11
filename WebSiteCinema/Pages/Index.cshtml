@@ -1,10 +1,8 @@
 ﻿@page
 @using ORM
+@using WebSiteCinema.HtmlContentMakers
 @model IndexModel
-@inject UsersRepository UsersRepository
-@{
-    ViewData["Title"] = "Home page";
-}
+@inject UnitOfWork UnitOfWork
 
 <section class="content">
     <div class="slider">
@@ -31,123 +29,13 @@
     </div>
     <h1 class="text-center">Популярно сейчас</h1>
     <div class="film-grid row">
-        <div class="col-sm-3 col-6">
-            <div class="film-item">
-                <div class="film-image">
-                    <img alt="Film Name" src="/images/films/film1.jpg">
-                </div>
-                <div class="film-meta">
-                    <div class="film-name">
-                        Film Name
-                    </div>
-                    <div class="film-category">
-                        Film Category
-                    </div>
-                </div>
-                <div class="film-meta-full">
-                    <div class="film-name">
-                        Film Name
-                    </div>
-                    <div class="film-category">
-                        Film Category
-                    </div>
-                    <div class="film-description">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate dolorum eligendi ipsum molestiae provident quisquam saepe vitae. Architecto consequuntur
-                    </div>
-                    <div class="film-button">
-                        <a class="btn" href="#">Купить билет</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3 col-6">
-            <div class="film-item">
-                <div class="film-image">
-                    <img alt="Film Name" src="/images/films/film1.jpg">
-                </div>
-                <div class="film-meta">
-                    <div class="film-name">
-                        Film Name
-                    </div>
-                    <div class="film-category">
-                        Film Category
-                    </div>
-                </div>
-                <div class="film-meta-full">
-                    <div class="film-name">
-                        Film Name
-                    </div>
-                    <div class="film-category">
-                        Film Category
-                    </div>
-                    <div class="film-description">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate dolorum eligendi ipsum molestiae provident quisquam saepe vitae. Architecto consequuntur
-                    </div>
-                    <div class="film-button">
-                        <a class="btn" href="#">Купить билет</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3 col-6">
-            <div class="film-item">
-                <div class="film-image">
-                    <img alt="Film Name" src="/images/films/film1.jpg">
-                </div>
-                <div class="film-meta">
-                    <div class="film-name">
-                        Film Name
-                    </div>
-                    <div class="film-category">
-                        Film Category
-                    </div>
-                </div>
-                <div class="film-meta-full">
-                    <div class="film-name">
-                        Film Name
-                    </div>
-                    <div class="film-category">
-                        Film Category
-                    </div>
-                    <div class="film-description">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate dolorum eligendi ipsum molestiae provident quisquam saepe vitae. Architecto consequuntur
-                    </div>
-                    <div class="film-button">
-                        <a class="btn" href="#">Купить билет</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3 col-6">
-            <div class="film-item">
-                <div class="film-image">
-                    <img alt="Film Name" src="/images/films/film1.jpg">
-                </div>
-                <div class="film-meta">
-                    <div class="film-name">
-                        Film Name
-                    </div>
-                    <div class="film-category">
-                        Film Category
-                    </div>
-                </div>
-                <div class="film-meta-full">
-                    <div class="film-name">
-                        Film Name
-                    </div>
-                    <div class="film-category">
-                        Film Category
-                    </div>
-                    <div class="film-description">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate dolorum eligendi ipsum molestiae provident quisquam saepe vitae. Architecto consequuntur
-                    </div>
-                    <div class="film-button">
-                        <a class="btn" href="#">Купить билет</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        @{
+            var films = await UnitOfWork.MovieRepository.GetAllAsync();
+            foreach (var f in films)
+            {
+                @IndexPage.CreateFilmCard(f,@Url.Page("/Film",new {id = f.id}));
+            }
+        }
     </div>
     <h1 class="text-center">Новинки</h1>
     <div class="film-grid row">

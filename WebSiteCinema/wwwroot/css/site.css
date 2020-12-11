@@ -415,6 +415,10 @@ h6 {
 }
 .film-reviews .review-text {
   font-size: 16px;
+  word-break: break-all;
+  white-space: pre-wrap;
+  max-width:90vw;
+  overflow-x: hidden;
 }
 
 .order-dates {

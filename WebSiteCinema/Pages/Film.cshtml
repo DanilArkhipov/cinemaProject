@@ -1,45 +1,73 @@
-@page
+@page "{id}"
+@using ORM
+@using WebSiteCinema.HtmlContentMakers
+@using WebSiteCinema.Services
 @model WebSiteCinema.Pages.Film
-
-<section class="content">
-    <div class="film-page">
-        <div class="film-header">
-            <div class="film-pic">
-                <img alt="Film 2" src="/images/films/film1.jpg">
+@inject UnitOfWork UnitOfWork
+@inject IAuthorization Authorization
+@{
+    var film = await UnitOfWork.MovieRepository.GetByIdAsync(int.Parse(RouteData.Values["id"].ToString()));
+}
+<section class='content'>
+    <div class='film-page'>
+        <div class='film-header'>
+            <div class='film-pic'>
+                <img alt='Film 2' src='\@film.poster'>
             </div>
-            <div class="film-meta">
-                <h1>Film Name <span class="film-age">16+</span></h1>
-                <div class="film-meta-item">
-                    <span class="film-meta-left">В ролях:</span>Усатый хрен, Лысый
+            <div class='film-meta'>
+                <h1>@film.name <span class='film-age'>@film.age_rating</span></h1>
+                <div class='film-meta-item'>
+                    <span class='film-meta-left'>В ролях:</span>@film.actors
                 </div>
-                <div class="film-meta-item"><span class="film-meta-left">Жанр:</span> Бестолковый</div>
-                <div class="film-meta-item"><span class="film-meta-left">Продолжительность:</span> не стоит того</div>
-                <div class="film-buy">
-                    <a class="btn" href="#">Купить билет</a>
+                <div class='film-meta-item'><span class='film-meta-left'>Жанр:</span>@film.category</div>
+                <div class='film-meta-item'><span class='film-meta-left'>Продолжительность:</span>@film.duration</div>
+                <div class='film-buy'>
+                    @{
+                        if (Authorization.Authenticated)
+                        {
+                            <a class='btn' href='#'>Купить билет</a>
+                        }
+                        else
+                        {
+                            <a class='btn' href='@Url.PageLink("/Login")'>Купить билет</a>
+                        }
+                    }
                 </div>
-                <div class="film-description">
-                    <h4>Описание</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis magni odit quam quis reiciendis unde, ut? Alias, animi voluptas! Animi asperiores eum eveniet illo natus porro quas quidem tenetur veniam!</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis magni odit quam quis reiciendis unde, ut? Alias, animi voluptas! Animi asperiores eum eveniet illo natus porro quas quidem tenetur veniam!</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Debitis magni odit quam quis reiciendis unde, ut? Alias, animi voluptas! Animi asperiores eum eveniet illo natus porro quas quidem tenetur veniam!</p>
+                <div class='film-description'>
+                    <p>@film.description</p>
                 </div>
             </div>
         </div>
 
         <div class="film-reviews">
             <h3>Отзывы</h3>
-            <div class="film-review-btn">
-                <a class="btn" href="#">Оставить отзыв</a>
+            <div id="reviewsContainer">
+            @{
+                var reviews = await UnitOfWork.MovieReviewRepository.GetByUserLoginAndMovieId(
+                    Authorization.UserData.Login,
+                    int.Parse(RouteData.Values["id"].ToString()));
+                foreach (var r in reviews)
+                {
+                    @FilmPage.CreateFilmReview(r);
+                }
+            }
             </div>
-            <div class="review">
-                <div class="review-header">
-                    <span class="review-user">Username</span>
-                    <span class="review-date">20.11.2020 20:11</span>
+            <div>
+                <div class="film-review-btn">
+                    <button class="btn" onclick="openReviewSection()" href="#">Оставить отзыв</button>
                 </div>
-                <div class="review-text">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores beatae, commodi dicta doloremque, earum facere incidunt labore perspiciatis possimus quae ratione rem sapiente tempora? Consectetur dolore dolorem ex repudiandae veniam!
+                <div class="form-group" id="reviewSection" style="display: none">
+                    <textarea style="white-space: pre-wrap" id="review" style="min-height: 20vh" class="form-control" name="review"></textarea>
+                    <button id="sendReviewBtn" onclick="sendReview()" class="btn btn-success">Отправить</button>
                 </div>
             </div>
+            
+            
         </div>
     </div>
 </section>
+<input id="filmIdContainer" value="@int.Parse(RouteData.Values["id"].ToString())" style="opacity: 0">
+@section Scripts{
+    <script data-main="scripts/main" charset="utf-8" src="/js/WebSocketManager.js"></script>
+    <script data-main="scripts/main" charset="utf-8" src="/js/MovieReview.js"></script>
+}

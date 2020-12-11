@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using WebSiteCinema.Services
+@inject IAuthorization Authorization
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +10,7 @@
     <link href="https://unpkg.com/swiper/swiper-bundle.min.css" rel="stylesheet"><!-- только для главной страницы-->
     <link href="/css/site.css" rel="stylesheet">
 </head>
-<body>
+<body style="overflow-x: hidden;">
 <header class="main-header">
     <div class="logo">
         <a href="/"></a>
@@ -15,11 +18,38 @@
 
     <nav class="header-nav">
         <ul>
-            <li class="nav-item"><a href="#">Item 1</a></li>
-            <li class="nav-item"><a href="#">Item 2</a></li>
-            <li class="nav-item"><a href="#">Item 3</a></li>
-            <li class="nav-item"><a href="#">Item 4</a></li>
-            <li class="nav-item"><a href="#">Item 5</a></li>
+            
+            @{
+                switch (Authorization.UserRole)
+                {
+                    case UserRole.NonAuthenticated:
+                    {
+                        <li class="nav-item"><a href=@Url.PageLink("/Index")>Главная</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Schedule")>Фильмы</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Login")>Авторизация</a></li>
+                        break;
+                    }
+                    case UserRole.Default:
+                    {
+                        <li class="nav-item"><a href=@Url.PageLink("/Index")>Главная</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Schedule")>Фильмы</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Orders")>Мои брони</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Profile") id="login">@Authorization.UserData.Login</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Profile","Logout")>Выйти</a></li>
+                        break;
+                    }
+                    case UserRole.Admin:
+                    {
+                        <li class="nav-item"><a href=@Url.PageLink("/Index")>Главная</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Schedule")>Фильмы</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Orders")>Мои брони</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Profile") id="login">@Authorization.UserData.Login</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/AdminPanelFilms")>Админка</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Profile","Logout")>Выйти</a></li>
+                        break;
+                    }
+                }
+            }
         </ul>
     </nav>
 </header>

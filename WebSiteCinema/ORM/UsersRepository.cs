@@ -11,9 +11,9 @@ using WebSiteCinema.Models;
 
 namespace ORM
 {
-    public class UsersRepository:DataConnection,IUsersRepository
+    public class UsersRepository:UnitOfWork,IUsersRepository
     {
-        public UsersRepository(LinqToDbConnectionOptions<UsersRepository> options)
+        public UsersRepository(LinqToDbConnectionOptions<UnitOfWork> options)
             : base(options)
         {
             
@@ -40,7 +40,6 @@ namespace ORM
                 phone = user.phone,
                 role = user.role,
                 status = user.status,
-                avatar = user.avatar,
             });
         }
 
@@ -55,22 +54,16 @@ namespace ORM
         }
         
 
-        /*public async Task UpdateAsync(int id,string login=null,string email=null,string password=null)
+        public async Task UpdateAsync(Users newUser,Users oldUser)
         {
-            var usrs = Users.Where(u => u.id == id);
-            if (login != null)
+            await Users.Where(u=>u.login==oldUser.login).UpdateAsync(users => new Users()
             {
-                await usrs.Set(u => u.login, login).UpdateAsync();
-            }
-            if (email != null)
-            {
-                await usrs.Set(u => u.email, email).UpdateAsync();
-            }
-            if (password != null)
-            {
-                await usrs.Set(u => u.password, password).UpdateAsync();;
-            }
-            
-        }*/
+                email = newUser.email ?? oldUser.email,
+                phone = newUser.phone ?? oldUser.phone,
+                password = newUser.password ?? oldUser.password,
+                role = newUser.role != oldUser.role ? newUser.role : oldUser.role,
+                status = newUser.status != oldUser.status ? newUser.status : oldUser.status,
+            });
+        }
     }
 }

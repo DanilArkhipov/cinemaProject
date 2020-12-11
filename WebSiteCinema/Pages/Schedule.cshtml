@@ -1,0 +1,74 @@
+@page
+@model WebSiteCinema.Pages.Schedule
+
+<section class="content">
+    <div class="filter-form">
+        <form action="">
+            <div class="left">
+                <div class="form-group">
+                    <label for="genre">Жанр</label>
+                    <select class="form-control" id="genre" name="genre">
+                        <option value="">Option 1</option>
+                        <option value="">Option 2</option>
+                        <option value="">Option 3</option>
+                        <option value="">Option 4</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="age">Возраст</label>
+                    <select class="form-control" id="age" name="age">
+                        <option value="">Option 1</option>
+                        <option value="">Option 2</option>
+                        <option value="">Option 3</option>
+                        <option value="">Option 4</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="search">Поиск</label>
+                    <input class="form-control" id="search" name="search">
+                </div>
+            </div>
+            <div class="right">
+                <input class="btn" type="submit" value="Искать">
+            </div>
+        </form>
+        <div class="order-dates">
+            <a href="#">Сегодня</a>
+            <a href="#">Завтра</a>
+            <a href="#">5 декабря</a>
+            <a href="#">6 декабря</a>
+        </div>
+    </div>
+
+    <div class="film-list">
+        <div class="film-item">
+            <div class="film-image">
+                <img alt="" src="/images/films/film2.jpg">
+            </div>
+            <div class="film-sessions">
+                <div class="film-data">
+                    <div class="film-name">
+                        Film Name
+                    </div>
+                    <div class="film-meta">
+                        Film Category
+                    </div>
+                    <div class="film-description">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci assumenda commodi deserunt eaque eos error excepturi exercitationem illo ipsa officia officiis praesentium quae quasi suscipit tempora temporibus totam, velit voluptatem.
+                    </div>
+                </div>
+                <ul>
+                    <li><a class="session" href="#">10:00</a></li>
+                    <li><a class="session" href="#">12:00</a></li>
+                    <li><a class="session" href="#">15:00</a></li>
+                    <li><a class="session" href="#">18:00</a></li>
+                    <li><a class="session" href="#">22:00</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="load-more">
+        <a class="btn" href="#">Загрузить еще</a>
+    </div>
+</section>

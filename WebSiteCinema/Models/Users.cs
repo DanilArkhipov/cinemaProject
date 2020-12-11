@@ -11,7 +11,6 @@ namespace WebSiteCinema.Models
         public short role;
         public string email;
         public string phone;
-        public string avatar;
 
         public Users(
             string login,
@@ -19,8 +18,7 @@ namespace WebSiteCinema.Models
             string email,
             string phone,
             short status = 0,
-            short role = 0,
-            string avatar = null)
+            short role = 0)
         {
             this.login = login;
             this.password = password;
@@ -28,7 +26,6 @@ namespace WebSiteCinema.Models
             this.role = role;
             this.email = email;
             this.phone = phone;
-            this.avatar = avatar;
         }
 
         public Users()

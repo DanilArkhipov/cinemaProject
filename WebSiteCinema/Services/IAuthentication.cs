@@ -5,7 +5,7 @@ namespace WebSiteCinema.Services
 {
     public interface IAuthentication
     {
-        public Task AuthenticateAsync(UserData data,bool useCookie);
+        public Task AuthenticateAsync(UserData data,bool useCookie = false);
         public Task AuthenticateAsync();
         public void RemoveAuthentication();
         public bool Authenticated { get; }

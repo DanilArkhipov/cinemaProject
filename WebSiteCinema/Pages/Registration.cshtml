@@ -4,7 +4,7 @@
 <section class="content">
     <div class="auth-form reg-form">
         <h2 class="text-center">Registration</h2>
-        <form action="" class="form-vertical" method="post">
+        <form class="form-vertical" method="post">
             <div class="form-group">
                 <label for="email">E-mail</label>
                 <input class="form-control" id="email" name="email" required type="email">
@@ -30,8 +30,7 @@
                 <span class="text-danger repeat-password-error"></span>
             </div>
             <div class="form-group">
-                <input class="btn" id="submit" type="submit" value="Register">
-                <a class="btn btn-primary" href="#">Login</a>
+                <input class="btn" asp-page-handler="Registration" id="submit" type="submit" value="Зарегистрироваться">
             </div>
         </form>
     </div>

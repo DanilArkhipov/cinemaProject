@@ -14,6 +14,6 @@ namespace ORM
         public Task InsertAsync(Users user);
         public Task DeleteAsync(Users user);
         public Task DeleteAsync(string login);
-        /*public Task UpdateAsync(int id,params string[] str);*/
+        Task UpdateAsync(Users newUser, Users oldUser);
     }
 }

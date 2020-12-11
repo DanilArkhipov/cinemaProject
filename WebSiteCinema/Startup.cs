@@ -14,10 +14,10 @@ using LinqToDB.AspNet.Logging;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Http;
 using ORM;
-using Repository;
 using WebSiteCinema.Middleware;
 using WebSiteCinema.Models;
 using WebSiteCinema.Services;
+using WebSocketManager;
 
 namespace WebSiteCinema
 {
@@ -33,12 +33,14 @@ namespace WebSiteCinema
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddLinqToDbContext<UsersRepository>((provider, options) =>
+            services.AddLinqToDbContext<UnitOfWork>((provider, options) =>
             {
                 options
                     .UseSqlServer(Configuration.GetConnectionString("SqlServer"))
                     .UseDefaultLogging(provider);
             });
+            services.AddWebSocketManager();
+            services.AddSingleton<IDataHandler, DataHandler>();
             services.AddHttpContextAccessor();
             services.AddScoped<IAuthentication, Authentication>();
             services.AddScoped<IAuthorization, Authorization>();
@@ -46,11 +48,10 @@ namespace WebSiteCinema
             services.AddSession(options => 
                 options.Cookie.Name = "AuthorizationSession");
             services.AddRazorPages();
-                
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -71,6 +72,8 @@ namespace WebSiteCinema
             app.UseSession();
             app.UseMiddleware<AuthenticationMiddleware>();
             app.UseMiddleware<AuthorizationMiddleware>();
+            app.UseWebSockets();
+            app.MapWebSocketManager("/MovieReview",serviceProvider.GetService<FilmReviewHandler>());
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

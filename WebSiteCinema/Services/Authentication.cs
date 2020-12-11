@@ -10,16 +10,16 @@ namespace WebSiteCinema.Services
     public class Authentication:IAuthentication
     {
         private const string SessionKey = "Authentification";
-        private readonly UsersRepository _usersRepository;
+        private readonly UnitOfWork _unitOfWork;
         private readonly HttpContext _context;
-        public Authentication(UsersRepository usersRepository,IHttpContextAccessor contextAccessor)
+        public Authentication(UnitOfWork unitOfWork,IHttpContextAccessor contextAccessor)
         {
-            _usersRepository = usersRepository;
+            _unitOfWork = unitOfWork;
             _context = contextAccessor.HttpContext;
         }
         public async Task AuthenticateAsync(UserData data,bool useCookie=false)
         {
-            var user = await _usersRepository.GetByLoginAsync(data.Login);
+            var user = await _unitOfWork.UsersRepository.GetByLoginAsync(data.Login);
             if (user!=null && user.password==data.Password && user.status==(short)UserStatus.Active)
             {
                 if (!Authenticated)

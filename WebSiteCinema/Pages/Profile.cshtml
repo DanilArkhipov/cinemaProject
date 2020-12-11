@@ -1,6 +1,13 @@
 @page
+@using ORM
+@using WebSiteCinema.Services
 @model WebSiteCinema.Pages.Profile
+@inject UnitOfWork UnitOfWork
+@inject IAuthorization Authorization
 
+@{
+    var user = await UnitOfWork.UsersRepository.GetByLoginAsync(Authorization.UserData.Login);
+}
 <section class="content profile-page">
     <h1 class="text-center">Профиль</h1>
 
@@ -8,19 +15,20 @@
         <div class="col-12 col-md-6 offset-md-3">
             <div class="top-nav">
                 <ul>
-                    <li><a class="active" href="#">Профиль</a></li>
-                    <li><a href="#">Заказы</a></li>
+                    <li><a class="active" href=@Url.PageLink("/Profile")>Профиль</a></li>
+                    <li><a href=@Url.PageLink("/Orders")>Заказы</a></li>
                 </ul>
             </div>
-            <div class="form">
+            <form class="form" method="post">
                 <div class="form-group">
-                    <label for="name">Имя</label>
-                    <input class="form-control" id="name" name="name" type="text">
+                    <label for="email">Почта</label>
+                    <input class="form-control" id="email" name="email" type="email" value="@user.email">
                 </div>
                 <div class="form-group">
-                    <label for="email">E-mail</label>
-                    <input class="form-control" id="email" name="email" type="email">
+                    <label for="phone">Телефон</label>
+                    <input class="form-control" id="phone" name="phone" type="tel" value="@user.phone">
                 </div>
+                
                 <hr>
                 <div>
                     <span class="hint text-warning">Оставьте пустым, если не хотите менять</span>
@@ -38,9 +46,9 @@
                     <input class="form-control" id="repeat-password" name="repeat_password" type="password">
                 </div>
                 <div class="form-group text-center">
-                    <input class="btn" type="submit" value="Сохранить">
+                    <input class="btn" type="submit" value="Сохранить" asp-page-handler="ChangeUser">
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </section>
