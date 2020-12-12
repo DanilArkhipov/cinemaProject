@@ -1,0 +1,64 @@
+@page "{id}"
+@using ORM
+@using WebSiteCinema.DataStorage
+@model WebSiteCinema.Pages.FilmEdit
+@inject UnitOfWork UnitOfWork;
+
+@{
+    Layout = "_AdminLayout";
+}
+
+@{
+    var movie = await UnitOfWork.MovieRepository.GetByIdAsync(int.Parse(RouteData.Values["id"] as string));
+}
+<div class="container">
+    <h1>Редактировать фильм</h1>
+    <div class="form">
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Название</label>
+                <input type="text" id="name" name="name" class="form-control" value="@movie.name">
+            </div>
+            <div class="form-group">
+                <label for="category">Жанр</label>
+                <input type="text" id="category" name="category" class="form-control" value="@movie.category">
+            </div>
+            <div class="form-group">
+                <label for="age_rating">Возрастное ограничение</label>
+                <input type="text" id="age_rating" name="age_rating" class="form-control" value="@movie.age_rating">
+            </div>
+            <div class="form-group">
+                <label for="actors">Актёры</label>
+                <input type="text" id="actors" name="actors" class="form-control" value="@movie.actors">
+            </div>
+            <div class="form-group">
+                <label for="duration">Длительность</label>
+                <input type="time" id="duration" name="duration" class="form-control" value="@movie.duration.ToString()">
+            </div>
+            <div class="form-group">
+                <label for="description">Описание</label>
+                <textarea  id="description" name="description" class="form-control">@movie.description</textarea>
+            </div>
+            <div class="form-group">
+                <label for="release_date">Дата выхода</label>
+                <input type="date" id="release_date" name="release_date" class="form-control" value="@movie.release_date.ToString("yyyy-mm-dd")">
+            </div>
+            
+            <div class="form-group">
+                <label for="picture">Постер</label>
+                <input type="file" id="picture" name="picture" class="form-control-file">
+            </div>
+            <div class="form-group">
+                <label for="status">Статус</label>
+                <select id="status" name="status" class="form-control-file">
+                    <option value="@((short)MovieStatus.Active)">Активно</option>
+                    <option value="@((short)MovieStatus.Blocked)">Заблокировано</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-success" asp-page-handler="ChangeMovie">
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,103 @@
+@page
+@using ORM
+@using WebSiteCinema.Models
+@model WebSiteCinema.Pages.Schedule
+@inject UnitOfWork UnitOfWork
+
+@{
+    var films = await UnitOfWork.MovieRepository.GetAllAsync();
+    var categories = films.Select(f => f.category).Distinct();
+    var ages = films.Select(f => f.age_rating).Distinct();
+}
+<section class="content">
+    <div class="filter-form">
+        <form action="">
+            <div class="left">
+                <div class="form-group">
+                    <label for="genre">Жанр</label>
+                    <select class="form-control" id="genre" name="genre">
+                        @{
+                            foreach (var c in categories)
+                            {
+                                <option value=@c>@c</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="age">Возраст</label>
+                    <select class="form-control" id="age" name="age">
+                        @{
+                            foreach (var a in ages)
+                            {
+                                <option value=@a>@a</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="search">Поиск</label>
+                    <input class="form-control" id="search" name="search">
+                </div>
+            </div>
+            <div class="right">
+                <input class="btn" type="submit" value="Искать" onclick="find()">
+            </div>
+        </form>
+    </div>
+
+    <div id="films" class="film-list">
+        @{
+            var age = HttpContext.Request.Query["age"].ToString();
+            var category = HttpContext.Request.Query["genre"].ToString();
+            var search = HttpContext.Request.Query["search"].ToString();
+            IEnumerable<Movie> movies = null;
+            if (search != "")
+            {
+                movies = await UnitOfWork.MovieRepository.GetByLambda(f => f.age_rating == age && f.category == category && f.name == search);
+            }
+            else if (age != "" && category!="")
+            {
+                movies = await UnitOfWork.MovieRepository.GetByLambda(f => f.age_rating == age && f.category == category);
+            }
+            else
+            {
+                movies=new List<Movie>();
+            }
+            foreach (var m in movies)
+            {
+                <div class="film-item">
+                    <div class="film-image">
+                        <img alt="" src="/@m.poster">
+                    </div>
+                    <div class="film-sessions">
+                        <div class="film-data">
+                            <div class="film-name">@m.name</div>
+                            <div class="film-meta">@m.category</div>
+                            <div class="film-description">@m.description</div>
+                        </div>
+                        @{
+                            var sessions = await UnitOfWork.SessionRepository.GetAllByMovieId(m.id);
+                        }
+                        <ul>
+                            @{
+                                foreach (var s in sessions)
+                                {
+                                    <li>
+                                        @{
+                                            var time = s.time.ToString("g");
+                                            var tmp = time.Split(':');
+                                            var res = tmp[0] + ":" + tmp[1];
+                                            var date = s.date.ToString("dd MMMM yyyy");
+                                        }
+                                        <a class="session" href="@Url.Page("/Order", new {id = s.id})">@date @res</a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</section>

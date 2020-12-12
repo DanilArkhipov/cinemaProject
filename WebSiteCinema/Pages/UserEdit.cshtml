@@ -1,0 +1,37 @@
+@page "{login}"
+@model WebSiteCinema.Pages.UserEdit
+@using ORM
+@using WebSiteCinema.Services
+@inject UnitOfWork UnitOfWork;
+@{
+    Layout = "_AdminLayout";
+}
+
+@{
+    var user = await UnitOfWork.UsersRepository.GetByLoginAsync(RouteData.Values["login"] as string);
+}
+<div class="container">
+    <h1>Редактировать пользователя</h1>
+    <div class="form">
+        <form method="post">
+            <div class="form-group">
+                <label for="userStatus">Статус</label>
+                <select id="userStatus" name="status" class="form-control-file">
+                    <option value="@((short)UserStatus.Active)">Активен</option>
+                    <option value="@((short)UserStatus.Banned)">Заблокирован</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="role">Права</label>
+                <select id="role" name="role" class="form-control-file">
+                    <option value="@((short)UserRole.Admin)">Администратор</option>
+                    <option value="@((short)UserRole.Default)">Пользователь</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-success" asp-page-handler="ChangeUser">
+            </div>
+        </form>
+    </div>
+</div>

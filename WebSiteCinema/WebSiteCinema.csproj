@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="linq2db.AspNet" Version="3.1.6" />
+      <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+      <PackageReference Include="WebSocketManager" Version="1.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="ORM\obj\ORM.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="ORM\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="ORM\obj\project.packagespec.json" />
+      <_ContentIncludedByDefault Remove="SeriallizatioData\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="SeriallizatioData\obj\project.packagespec.json" />
+      <_ContentIncludedByDefault Remove="SeriallizatioData\obj\SeriallizatioData.csproj.nuget.dgspec.json" />
+      <_ContentIncludedByDefault Remove="Repository\obj\project.assets.json" />
+      <_ContentIncludedByDefault Remove="Repository\obj\project.packagespec.json" />
+      <_ContentIncludedByDefault Remove="Repository\obj\Repository.csproj.nuget.dgspec.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="ORM\ORM.csproj" />
+      <Content Include="WebSiteCinema.sln" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="ORM\bin\Debug\netcoreapp3.1" />
+    </ItemGroup>
+
+</Project>

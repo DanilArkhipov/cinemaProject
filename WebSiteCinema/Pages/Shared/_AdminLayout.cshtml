@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+<div class="top-nav">
+    <ul class="nav  justify-content-center">
+        <li class="nav-item">
+            <a class="nav-link active" href=@Url.PageLink("/Index")>Главная</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href=@Url.PageLink("/AdminPanelFilms")>Фильмы</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href=@Url.PageLink("/AdminPanelUsers")>Пользователи</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href=@Url.PageLink("/AdminPanelSchedule")>Расписание</a>
+        </li>
+        
+    </ul>
+</div>
+@RenderBody()
+</body>
+</html>

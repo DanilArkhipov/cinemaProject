@@ -1,0 +1,113 @@
+﻿@using WebSiteCinema.Services
+@inject IAuthorization Authorization
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cinema 25D</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/swiper/swiper-bundle.min.css" rel="stylesheet"><!-- только для главной страницы-->
+    <link href="/css/site.css" rel="stylesheet">
+</head>
+<body style="overflow-x: hidden;">
+<header class="main-header">
+    <div class="logo">
+        <a href="/"></a>
+    </div>
+
+    <nav class="header-nav">
+        <ul>
+            
+            @{
+                switch (Authorization.UserRole)
+                {
+                    case UserRole.NonAuthenticated:
+                    {
+                        <li class="nav-item"><a href=@Url.PageLink("/Index")>Главная</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Schedule")>Фильмы</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Login")>Авторизация</a></li>
+                        break;
+                    }
+                    case UserRole.Default:
+                    {
+                        <li class="nav-item"><a href=@Url.PageLink("/Index")>Главная</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Schedule")>Фильмы</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Orders")>Мои брони</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Profile") id="login">@Authorization.UserData.Login</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Profile","Logout")>Выйти</a></li>
+                        break;
+                    }
+                    case UserRole.Admin:
+                    {
+                        <li class="nav-item"><a href=@Url.PageLink("/Index")>Главная</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Schedule")>Фильмы</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Orders")>Мои брони</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Profile") id="login">@Authorization.UserData.Login</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/AdminPanelFilms")>Админка</a></li>
+                        <li class="nav-item"><a href=@Url.PageLink("/Profile","Logout")>Выйти</a></li>
+                        break;
+                    }
+                }
+            }
+        </ul>
+    </nav>
+</header>
+
+@RenderBody()
+
+
+<footer class="main-footer">
+    <div class="row">
+        <div class="col-12 col-sm-6">
+            <nav class="footer-nav">
+                <ul>
+                    <li><a href="#">Item 1</a></li>
+                    <li><a href="#">Item 2</a></li>
+                    <li><a href="#">Item 3</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="col-12 col-sm-6">
+            <div class="text-right">Cinema 25D - 2020</div>
+        </div>
+    </div>
+</footer>
+
+<script src="/js/jquery.js"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script><!-- только для главной страницы-->
+<script src="/js/site.js"></script>
+<script src="/js/Ajax.js"></script>
+
+<!-- только для главной страницы-->
+<script>
+    var mySwiper = new Swiper('.swiper-container', {
+        // Optional parameters
+        direction: 'horizontal',
+        loop: true,
+
+        // If we need pagination
+        pagination: {
+            el: '.swiper-pagination',
+        },
+
+        // Navigation arrows
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+
+        // And if we need scrollbar
+        scrollbar: {
+            el: '.swiper-scrollbar',
+        },
+    })
+</script>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+
+@RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,39 @@
+@page
+@using ORM
+@using WebSiteCinema.HtmlContentMakers
+@model WebSiteCinema.Pages.AdminPanelFilms
+@inject UnitOfWork UnitOfWork
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="container">
+    <h1>Фильмы</h1>
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Жанр</th>
+            <th>Статус</th>
+            <th>Возраст</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            var movies = await UnitOfWork.MovieRepository.GetAllAsync();
+            foreach (var m in movies)
+            {
+                @AdminFilmsPage.CreateFilmRow(
+                    m,
+                    @Url.Page("/Film", new {id = m.id}),
+                    @Url.Page("/FilmEdit", new {id = m.id}),
+                    @Url.Page("/AdminPanelFilms",new {handler = "Delete",id=m.id})
+                    );
+            }
+        }
+        </tbody>
+    </table>
+    <a class="btn btn-success" href=@Url.PageLink("/FilmCreate")>Добавить фильм</a>
+</div>
