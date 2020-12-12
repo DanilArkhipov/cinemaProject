@@ -1,6 +1,14 @@
 @page
+@using ORM
+@using WebSiteCinema.Models
 @model WebSiteCinema.Pages.Schedule
+@inject UnitOfWork UnitOfWork
 
+@{
+    var films = await UnitOfWork.MovieRepository.GetAllAsync();
+    var categories = films.Select(f => f.category).Distinct();
+    var ages = films.Select(f => f.age_rating).Distinct();
+}
 <section class="content">
     <div class="filter-form">
         <form action="">
@@ -8,19 +16,23 @@
                 <div class="form-group">
                     <label for="genre">Жанр</label>
                     <select class="form-control" id="genre" name="genre">
-                        <option value="">Option 1</option>
-                        <option value="">Option 2</option>
-                        <option value="">Option 3</option>
-                        <option value="">Option 4</option>
+                        @{
+                            foreach (var c in categories)
+                            {
+                                <option value=@c>@c</option>
+                            }
+                        }
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="age">Возраст</label>
                     <select class="form-control" id="age" name="age">
-                        <option value="">Option 1</option>
-                        <option value="">Option 2</option>
-                        <option value="">Option 3</option>
-                        <option value="">Option 4</option>
+                        @{
+                            foreach (var a in ages)
+                            {
+                                <option value=@a>@a</option>
+                            }
+                        }
                     </select>
                 </div>
                 <div class="form-group">
@@ -29,46 +41,63 @@
                 </div>
             </div>
             <div class="right">
-                <input class="btn" type="submit" value="Искать">
+                <input class="btn" type="submit" value="Искать" onclick="find()">
             </div>
         </form>
-        <div class="order-dates">
-            <a href="#">Сегодня</a>
-            <a href="#">Завтра</a>
-            <a href="#">5 декабря</a>
-            <a href="#">6 декабря</a>
-        </div>
     </div>
 
-    <div class="film-list">
-        <div class="film-item">
-            <div class="film-image">
-                <img alt="" src="/images/films/film2.jpg">
-            </div>
-            <div class="film-sessions">
-                <div class="film-data">
-                    <div class="film-name">
-                        Film Name
+    <div id="films" class="film-list">
+        @{
+            var age = HttpContext.Request.Query["age"].ToString();
+            var category = HttpContext.Request.Query["genre"].ToString();
+            var search = HttpContext.Request.Query["search"].ToString();
+            IEnumerable<Movie> movies = null;
+            if (search != "")
+            {
+                movies = await UnitOfWork.MovieRepository.GetByLambda(f => f.age_rating == age && f.category == category && f.name == search);
+            }
+            else if (age != "" && category!="")
+            {
+                movies = await UnitOfWork.MovieRepository.GetByLambda(f => f.age_rating == age && f.category == category);
+            }
+            else
+            {
+                movies=new List<Movie>();
+            }
+            foreach (var m in movies)
+            {
+                <div class="film-item">
+                    <div class="film-image">
+                        <img alt="" src="/@m.poster">
                     </div>
-                    <div class="film-meta">
-                        Film Category
-                    </div>
-                    <div class="film-description">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci assumenda commodi deserunt eaque eos error excepturi exercitationem illo ipsa officia officiis praesentium quae quasi suscipit tempora temporibus totam, velit voluptatem.
+                    <div class="film-sessions">
+                        <div class="film-data">
+                            <div class="film-name">@m.name</div>
+                            <div class="film-meta">@m.category</div>
+                            <div class="film-description">@m.description</div>
+                        </div>
+                        @{
+                            var sessions = await UnitOfWork.SessionRepository.GetAllByMovieId(m.id);
+                        }
+                        <ul>
+                            @{
+                                foreach (var s in sessions)
+                                {
+                                    <li>
+                                        @{
+                                            var time = s.time.ToString("g");
+                                            var tmp = time.Split(':');
+                                            var res = tmp[0] + ":" + tmp[1];
+                                            var date = s.date.ToString("dd MMMM yyyy");
+                                        }
+                                        <a class="session" href="@Url.Page("/Order", new {id = s.id})">@date @res</a>
+                                    </li>
+                                }
+                            }
+                        </ul>
                     </div>
                 </div>
-                <ul>
-                    <li><a class="session" href="#">10:00</a></li>
-                    <li><a class="session" href="#">12:00</a></li>
-                    <li><a class="session" href="#">15:00</a></li>
-                    <li><a class="session" href="#">18:00</a></li>
-                    <li><a class="session" href="#">22:00</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="load-more">
-        <a class="btn" href="#">Загрузить еще</a>
+            }
+        }
     </div>
 </section>

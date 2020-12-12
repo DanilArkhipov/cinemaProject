@@ -28,5 +28,10 @@ namespace ORM
         {
             return await Sessions.Where(s => s.film_id == film_id).ToListAsync();
         }
+
+        public async Task<Session> GetById(int id)
+        {
+            return await Sessions.Where(s => s.id == id).FirstOrDefaultAsync();
+        }
     }
 }

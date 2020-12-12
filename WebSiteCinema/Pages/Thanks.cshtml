@@ -1,21 +1,24 @@
 @page
+@using ORM
 @model WebSiteCinema.Pages.Thanks
-
+@inject UnitOfWork UnitOfWork
+@{
+    var code = HttpContext.Request.Query["code"].ToString();
+    var order = await UnitOfWork.OrderRepository.GetAsync(code);
+    var place = await UnitOfWork.PlaceRepository.GetAsync(order.id);
+}
 <section class="content">
     <h1 class="text-center">
         Ваша бронь
     </h1>
     <p class="text-center mt-5 h4">
-        Номер брони<br> <strong class="h2">21312</strong>
+        Номер брони<br> <strong class="h2">@order.code</strong>
         <br>
-        <br>
-        Сумма: <strong>450р.</strong>
-        <br>
-        Места: 5 ряд 15 место, 5 ряд 14 место
+        Место: @place.name
         <br>
         <br>
         <span class="text-warning">Предъявите номер брони на кассе для получения билетов</span>
         <br>
-        <a class="mt-5 btn" href="#">Мои брони</a>
+        <a class="mt-5 btn" href=@Url.PageLink("/Orders")>Мои брони</a>
     </p>
 </section>

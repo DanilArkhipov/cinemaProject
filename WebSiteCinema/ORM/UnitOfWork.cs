@@ -72,5 +72,35 @@ namespace ORM
                 return _sessionRepository;
             }
         }
+
+        private IPlaceRepository _placeRepository;
+
+        public IPlaceRepository PlaceRepository
+        {
+            get
+            {
+                if (_placeRepository == null)
+                {
+                    _placeRepository = new PlaceRepository(_options);
+                }
+
+                return _placeRepository;
+            }
+        }
+
+        private IOrderRepository _orderRepository;
+
+        public IOrderRepository OrderRepository
+        {
+            get
+            {
+                if (_orderRepository == null)
+                {
+                    _orderRepository = new OrderRepository(_options);
+                }
+
+                return _orderRepository;
+            }
+        }
     }
 }

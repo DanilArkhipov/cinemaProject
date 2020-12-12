@@ -1,0 +1,23 @@
+@using ORM
+@model IEnumerable<WebSiteCinema.Models.Movie>
+@inject UnitOfWork UnitOfWork
+@{
+    foreach (var m in Model)
+    {
+        var sesions = await UnitOfWork.SessionRepository.GetAllByMovieId(m.id);
+        <div class="film-sessions">
+            <div class="film-data">
+                <div class="film-name">@m.name</div>
+                <div class="film-meta">@m.category</div>
+                <div class="film-description">@m.description</div>
+            </div>
+            <ul>
+                @foreach (var s in sesions)
+                {
+                    <li><a class="session" href=@Url.PageLink("/Order")>@s.date.ToShortDateString() @s.time</a></li>
+                }
+                <li><a class="session" href="#">22:00</a></li>
+            </ul>
+        </div>
+    }
+}

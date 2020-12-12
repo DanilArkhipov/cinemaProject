@@ -56,7 +56,7 @@ namespace ORM
 
         public async Task UpdateAsync(Movie oldMovie,Movie newMovie)
         {
-            await Movie.UpdateAsync(movie => new Movie()
+            await Movie.Where(m=>m.id == oldMovie.id).UpdateAsync(movie => new Movie()
             {
                 actors = newMovie.actors ?? oldMovie.actors,
                 age_rating = newMovie.age_rating ?? oldMovie.age_rating,
@@ -69,6 +69,11 @@ namespace ORM
                 status = newMovie.status == null ? oldMovie.status : newMovie.status,
                 
             });
+        }
+
+        public async Task<IEnumerable<Movie>> GetByLambda(Expression<Func<Movie,bool>> lambda)
+        {
+            return await Movie.Where(lambda).ToListAsync();
         }
     }
 }

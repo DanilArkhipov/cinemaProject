@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-    var places = new Map();
+    /*var places = new Map();
     var sum = 0;
     $('.order-places .place-btn').click(function (e) {
         e.preventDefault();
@@ -32,10 +32,10 @@ $(document).ready(function () {
 
         if (sum > 0) {
             $('.order-summary-text').html(summary_text);
-            $('.order-summary-button button').prop("disabled", false);
+            $('#sendBtn').prop("disabled", false);
         } else {
             $('.order-summary-text').html("");
-            $('.order-summary-button button').prop("disabled", true);
+            $('#sendBtn').prop("disabled", true);
         }
         return false;
     });
@@ -45,13 +45,17 @@ $(document).ready(function () {
         if (places.size == 0) return false;
 
         console.log(places)
-
+        let addres = document.location.protocol + "//"+ document.location.host+"/order/";
+        console.log(addres)
         $.ajax({
-            url: '/',
-            method: 'post',
-            data: {places: Array.from(places.values())}
+            url: addres,
+            type: "get",
+            data: {places: Array.from(places.values())},
+            success: function (data){
+                console.log("Успешно")
+            }
         });
-    });
+    });*/
 
 
     $('.reg-form #email').on("keyup", function () {

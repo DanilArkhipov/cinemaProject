@@ -8,5 +8,6 @@ namespace ORM
     {
         public Task Insert(Session session);
         Task<IEnumerable<Session>> GetAllByMovieId(int film_id);
+        Task<Session> GetById(int id);
     }
 }

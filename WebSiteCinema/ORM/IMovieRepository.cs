@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using WebSiteCinema.Models;
 
@@ -12,5 +14,6 @@ namespace ORM
         public Task DeleteAsync(Movie movie);
         public Task DeleteAsync(int id);
         public Task UpdateAsync(Movie oldMovie, Movie newMovie);
+        public Task<IEnumerable<Movie>> GetByLambda(Expression<Func<Movie, bool>> lambda);
     }
 }

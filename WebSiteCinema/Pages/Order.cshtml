@@ -1,84 +1,69 @@
-@page
+@page 
 @using WebSiteCinema.Pages.Shared
+@using ORM
+@using WebSiteCinema.DataStorage
 @model WebSiteCinema.Pages.Order
+@inject UnitOfWork UnitOfWork
+@{
+    var idStr = HttpContext.Request.Query["id"].ToString();
+    if (idStr != "")
+    {
+        var id = int.Parse(idStr); 
+        var session = await UnitOfWork.SessionRepository.GetById(id);
+        var movie = await UnitOfWork.MovieRepository.GetByIdAsync(session.film_id);
+        var places = await UnitOfWork.PlaceRepository.GetBySessionIdAsync(id);
+        if (!places.Any())
+        {
+            await UnitOfWork.PlaceRepository.CreatePlacesAsync(session.id, 3, 15);
+            places = await UnitOfWork.PlaceRepository.GetBySessionIdAsync(id);
+        }
 
+        <section class="content">
+            <div class="film-page film-order">
+                <h2>@movie.name</h2>
+                @{
+                    var timeTmp = session.time.ToString("g").Split(':');
+                    var time = timeTmp[0] + ":" + timeTmp[1];
+                }
+                <div class="order-dates">
+                    <span>Время сеанса: @session.date.ToString("dd MMMM yyyy") в @time</span>
+                </div>
 
+                <div class="order-places">
+                    <div class="screen">Экран</div>
+                    @{
+                        for (int r = 1; r <= 3; r++)
+                        {
+                            <div class="custom-row">
+                                <span class="row-number">Ряд @r</span>
+                                @{
+                                    for (int c = 1; c <= 15; c++)
+                                    {
+                                        var tmp = places.Where(p => p.name == string.Format("{0}-{1}-{2}", id, r, c)).FirstOrDefault().status;
+                                        var str = tmp == (short) PlaceStatus.Reserved ? "style= opacity:0" : "";
+                                        <a class="place-btn"data-place="1" @str data-row="1" href="#">@r-@c</a>
+                                    }
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+                <div class="order-summary">
+                    <form class="order-summary-button" method="post">
+                        <input type="text" placeholder="Введите номер места" class="form-control form-group" name="number">
+                        <input type="text" value="@id" style="opacity:0" placeholder="Введите номер места" class="form-control form-group" name="session_id">
+                        <input type="submit" class="btn submit-order" value="Забронировать" asp-page-handler="Order">
+                    </form>
+                    <div class="order-summary-text">
 
-<section class="content">
-    <div class="film-page film-order">
-        <h2>Film Name</h2>
-
-        <div class="order-dates">
-            <span>Время сеанса: 25.12.2020 в 15:40</span>
-        </div>
-
-        <div class="order-places">
-            <div class="screen">Экран</div>
-            <div class="row">
-                <span class="row-number">Ряд 1</span>
-                <a class="place-btn" data-place="1" data-row="1" href="#">1</a>
-                <a class="place-btn" data-place="2" data-row="1" href="#">2</a>
-                <a class="place-btn" data-place="3" data-row="1" href="#">3</a>
-                <a class="place-btn" data-place="4" data-row="1" href="#">4</a>
-                <a class="place-btn" data-place="5" data-row="1" href="#">5</a>
-                <a class="place-btn" data-place="6" data-row="1" href="#">6</a>
-                <a class="place-btn" data-place="7" data-row="1" href="#">7</a>
-                <a class="place-btn" data-place="8" data-row="1" href="#">8</a>
-                <a class="place-btn" data-place="9" data-row="1" href="#">9</a>
-                <a class="place-btn" data-place="10" data-row="1" href="#">10</a>
-                <a class="place-btn" data-place="11" data-row="1" href="#">11</a>
-                <a class="place-btn" data-place="12" data-row="1" href="#">12</a>
-                <a class="place-btn" data-place="13" data-row="1" href="#">13</a>
-                <a class="place-btn" data-place="14" data-row="1" href="#">14</a>
-                <a class="place-btn" data-place="15" data-row="1" href="#">15</a>
+                    </div>
+                </div>
             </div>
-            <div class="row">
-                <span class="row-number">Ряд 2</span>
-                <a class="place-btn" data-place="1" data-row="2" href="#">1</a>
-                <a class="place-btn" data-place="2" data-row="2" href="#">2</a>
-                <a class="place-btn" data-place="3" data-row="2" href="#">3</a>
-                <a class="place-btn" data-place="4" data-row="2" href="#">4</a>
-                <a class="place-btn" data-place="5" data-row="2" href="#">5</a>
-                <a class="place-btn" data-place="6" data-row="2" href="#">6</a>
-                <a class="place-btn" data-place="7" data-row="2" href="#">7</a>
-                <a class="place-btn" data-place="8" data-row="2" href="#">8</a>
-                <a class="place-btn" data-place="9" data-row="2" href="#">9</a>
-                <a class="place-btn" data-place="10" data-row="2" href="#">10</a>
-                <a class="place-btn" data-place="11" data-row="2" href="#">11</a>
-                <a class="place-btn" data-place="12" data-row="2" href="#">12</a>
-                <a class="place-btn" data-place="13" data-row="2" href="#">13</a>
-                <a class="place-btn" data-place="14" data-row="2" href="#">14</a>
-                <a class="place-btn" data-place="15" data-row="2" href="#">15</a>
-            </div>
-            <div class="row">
-                <span class="row-number">Ряд 3</span>
-                <a class="place-btn" data-place="1" data-row="3" href="#">1</a>
-                <a class="place-btn" data-place="2" data-row="3" href="#">2</a>
-                <a class="place-btn" data-place="3" data-row="3" href="#">3</a>
-                <a class="place-btn" data-place="4" data-row="3" href="#">4</a>
-                <a class="place-btn" data-place="5" data-row="3" href="#">5</a>
-                <a class="place-btn" data-place="6" data-row="3" href="#">6</a>
-                <a class="place-btn" data-place="7" data-row="3" href="#">7</a>
-                <a class="place-btn" data-place="8" data-row="3" href="#">8</a>
-                <a class="place-btn" data-place="9" data-row="3" href="#">9</a>
-                <a class="place-btn" data-place="10" data-row="3" href="#">10</a>
-                <a class="place-btn" data-place="11" data-row="3" href="#">11</a>
-                <a class="place-btn" data-place="12" data-row="3" href="#">12</a>
-                <a class="place-btn" data-place="13" data-row="3" href="#">13</a>
-                <a class="place-btn" data-place="14" data-row="3" href="#">14</a>
-                <a class="place-btn" data-place="15" data-row="3" href="#">15</a>
-            </div>
-        </div>
-        <div class="order-summary">
-            <div class="order-summary-button">
-                <button class="btn submit-order" disabled>Забронировать</button>
-            </div>
-            <div class="order-summary-text">
-
-            </div>
-        </div>
-    </div>
-</section>
-<script>var price = 150;</script>
+        </section>
+    }
+}
+<script>
+    var price = 150;
+</script>
 <script src="/js/jquery.js"></script>
 <script src="/js/site.js"></script>

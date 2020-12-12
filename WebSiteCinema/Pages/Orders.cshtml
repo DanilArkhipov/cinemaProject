@@ -1,43 +1,59 @@
 @page
+@using ORM
+@using WebSiteCinema.Services
 @model WebSiteCinema.Pages.Orders
-
+@inject UnitOfWork UnitOfWork
+@inject IAuthorization Authorization
 <section class="content profile-page">
     <h1 class="text-center">Брони</h1>
 
+    @{
+        var orders = await UnitOfWork.OrderRepository.GetAllByUserLoginAsync(Authorization.UserData.Login);
+    }
     <div class="row">
         <div class="col-12 col-md-6 offset-md-3">
             <div class="top-nav">
                 <ul>
-                    <li><a href="#">Профиль</a></li>
-                    <li><a class="active" href="#">Брони</a></li>
+                    <li><a href=@Url.PageLink("/Profile")>Профиль</a></li>
+                    <li><a class="active" href="@Url.PageLink("/Orders")">Брони</a></li>
                 </ul>
             </div>
             <div class="orders">
-                <div class="order-item">
-                    <div class="order-date">
-                        01.12.2020 15:35
-                    </div>
-                    <div class="film-name">
-                        FIlm name
-                    </div>
-                    <div class="order-data row">
-                        <div class="col-4">
-                            <div><strong>Время сеанса</strong></div>
-                            <div>02.12.2020 15:40</div>
+                @{
+                    foreach (var o in orders)
+                    {
+                        <div class="order-item">
+                            <div class="order-date">
+                                @o.created
+                            </div>
+                            <div class="film-name">
+                                @{
+                                    var place = await UnitOfWork.PlaceRepository.GetAsync(o.place_id);
+                                    var session = await UnitOfWork.SessionRepository.GetById(place.session_id);
+                                    var movie = await UnitOfWork.MovieRepository.GetByIdAsync(session.film_id);
+                                }
+                                @movie.name
+                            </div>
+                            <div class="order-data row">
+                                <div class="col-4">
+                                    <div><strong>Время сеанса</strong></div>
+                                    @{
+                                        var timeTmp = session.time.ToString("g").Split(':');
+                                        var time = timeTmp[0] + ":" + timeTmp[1];
+                                    }
+                                    <div>@session.date.ToString("dd MMMM yyyy") @time</div>
+                                </div>
+                            </div>
+                            <div class="order-place">
+                                <strong>Места: </strong>
+                                @place.name
+                            </div>
+                            <hr>
+                            <h1># @o.code</h1>
+                            <span class="hint">Укажите номер брони на кассе для получения билетов</span>
                         </div>
-                        <div class="col-4">
-                            <div><strong>Сумма</strong></div>
-                            <div>450р.</div>
-                        </div>
-                    </div>
-                    <div class="order-place">
-                        <strong>Места: </strong>
-                        5 ряд 15 место, 5 ряд 14 место
-                    </div>
-                    <hr>
-                    <h1># 123213123</h1>
-                    <span class="hint">Укажите номер брони на кассе для получения билетов</span>
-                </div>
+                    }
+                }
             </div>
         </div>
     </div>
